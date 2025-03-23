@@ -49,6 +49,16 @@ public class Graph{
             System.out.println();
         }
      }
+    void topologicalSorting(ArrayList<Edge> g[], int start, boolean visited[], Stack<Integer> s) {
+          visited[start] = true;
+          for(int i = 0; i<g[start].size(); i++) {
+            Edge e = g[start].get(i);
+            if(!visited[e.dest]) {
+                topologicalSorting(g, e.dest, visited, s);
+            }
+          }
+          s.push(start);
+    }
     void printAllPath(ArrayList<Edge> g[], int start, boolean visited[], int target, String path) {
         if(start == target) {
             System.out.println(path);
@@ -74,6 +84,24 @@ public class Graph{
             System.out.println( " " + e.dest);
         }
     }
+    boolean isCycle(ArrayList<Edge> g[], int start, boolean visited[], boolean recur[]) {
+        visited[start] = true;
+        recur[start] = true;
+        for(int i = 0; i < g[start].size(); i++) {
+            Edge e = g[start].get(i);
+            if(recur[e.dest]) { //if node in stack cycle exist
+                return true;
+            }else if(!visited[e.dest]) {
+                if(isCycle(g, e.dest, visited, recur)) {
+                    return true;
+                }
+            }
+        }
+        recur[start] = false;
+        return false;
+
+
+    }
         
         public void createGraph(ArrayList<Edge> g[]) {
             for(int i = 1; i < g.length; i++) {
@@ -84,22 +112,22 @@ public class Graph{
             g[1].add(new Edge(1, 5));
             g[1].add(new Edge(1, 3));
 
-            g[2].add(new Edge(2, 1));
-            g[2].add(new Edge(2, 3));
+            //g[2].add(new Edge(2, 1));
+            //g[2].add(new Edge(2, 3));
             g[2].add(new Edge(2, 6));
 
-            g[3].add(new Edge(3, 1));
+           // g[3].add(new Edge(3, 1));
             g[3].add(new Edge(3, 2));
             g[3].add(new Edge(3, 4));
 
-            g[4].add(new Edge(4, 3));
+           // g[4].add(new Edge(4, 3));
             g[4].add(new Edge(4, 6));
 
-            g[5].add(new Edge(5, 1));
+            //g[5].add(new Edge(5, 1));
             g[5].add(new Edge(5, 6));
 
-            g[6].add(new Edge(6, 4));
-            g[6].add(new Edge(6, 5));
+            // g[6].add(new Edge(6, 4));
+            // g[6].add(new Edge(6, 5));
 
 
 
@@ -111,13 +139,31 @@ public class Graph{
         }
     
      public static void main(String []args) {
+        
         int v = 6;
         @SuppressWarnings("unchecked")
+        Stack<Integer> s = new Stack<>();
+        boolean visited[] = new boolean[v + 1];
         ArrayList<Edge> graph[] = new ArrayList[v + 1];
         Graph g = new Graph();
         g.createGraph(graph);
-        System.out.println(" \nall paths are : ");
-        g.printAllPath(graph, 1, new boolean[v + 1], 5, "1");
+        // System.out.println(" \nall paths are : ");
+        // g.printAllPath(graph, 1, new boolean[v + 1], 5, "1");
+        // System.out.println();
+        // if(g.isCycle(graph, 1, new boolean[v + 1], new boolean[v + 1])) {
+        //     System.out.println("cycle exist");
+        // }else{
+        //     System.out.println("no cycle exist");
+        // }
+        for(int i = 1; i < v + 1; i++) {
+            if(!visited[i]) {
+                g.topologicalSorting(graph, i, visited, s);
+            }
+        }
+        System.out.print("\ntopological sorting : ");
+        while (!s.isEmpty()) {
+            System.out.print(s.pop() + " ");
+        }
 
      }
 }

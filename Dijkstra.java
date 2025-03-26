@@ -1,5 +1,5 @@
 package DSA;
-
+//time complexity : O((V + E) log V ) because of adjacency list
 
 import java.util.ArrayList;
 import java.util.PriorityQueue;

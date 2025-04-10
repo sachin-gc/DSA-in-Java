@@ -8,7 +8,7 @@ public class SCC {
     static class Edge {
         int src, dest;
 
-        public Edge(int s, int d) {
+        public Edge(int s, int d) { 
             this.dest = d;
             this.src = s;
 

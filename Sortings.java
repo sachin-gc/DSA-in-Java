@@ -12,6 +12,23 @@ public class Sortings{
             }
         }
     }
+public static void bubbleSortRecursive(int[] arr, int n) {
+    // Base case: If array size is 1, it's already sorted
+    if (n == 1) return;
+
+    // One pass of bubble sort: pushes largest element to the end
+    for (int j = 0; j < n - 1; j++) {
+        if (arr[j] > arr[j + 1]) {
+            int temp = arr[j];
+            arr[j] = arr[j + 1];
+            arr[j + 1] = temp;
+        }
+    }
+
+    // Recursively call for remaining array (largest element fixed)
+    bubbleSortRecursive(arr, n - 1);
+}
+
   public static void selectionSort(int[] arr) {
         int n = arr.length;
         for (int i = 0; i < n - 1; i++) {
@@ -41,6 +58,25 @@ public class Sortings{
             arr[j + 1] = key;
         }
     }
+
+    public static void insertionSortRecursive(int[] arr, int n) {
+    // Base case: single element is already sorted
+    if (n <= 1) return;
+
+    // Sort first n-1 elements
+    insertionSortRecursive(arr, n - 1);
+
+    // Insert last element at its correct position in sorted array
+    int last = arr[n - 1];
+    int j = n - 2;
+
+    while (j >= 0 && arr[j] > last) {
+        arr[j + 1] = arr[j];
+        j--;
+    }
+    arr[j + 1] = last;
+    }
+
   public static int partition(int[] arr, int low, int high) {
         int pivot = arr[high];
         int i = (low - 1);
